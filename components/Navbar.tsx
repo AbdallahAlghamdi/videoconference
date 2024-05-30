@@ -18,7 +18,7 @@ const Navbar = () => {
           />
           <p className='text-[26px] font-extrabold text-white max-sm:hidden'>Yoom</p>
       </Link>
-      <div className='flex-between gap-5'>
+      <div className='flex-between gap-5  items-stretch'>
         <SignedIn>
                 <UserButton />
         </SignedIn>
