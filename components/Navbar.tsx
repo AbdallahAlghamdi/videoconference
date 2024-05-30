@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import React from 'react'
+import MobileNav from './MobileNav'
 
 const Navbar = () => {
   return (
@@ -17,7 +18,8 @@ const Navbar = () => {
           <p className='text-[26px] font-extrabold text-white max-sm:hidden'>Yoom</p>
       </Link>
       <div className='flex-between gap-5'>
-        
+        {/* Clerk- User Management */}
+        <MobileNav/>
       </div>
     </nav>
   )
