@@ -6,6 +6,9 @@ import MeetingModal from './MeetingModal'
 import { useUser } from '@clerk/nextjs'
 import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk'
 import { useToast } from "@/components/ui/use-toast"
+import { Toast } from '@radix-ui/react-toast'
+import { Textarea } from "@/components/ui/textarea"
+import ReactDatePicker from 'react-datepicker'
 
 const MeetingTypeList = () => {
   const { toast } = useToast()
@@ -17,24 +20,24 @@ const MeetingTypeList = () => {
     link: ''
   });
   const [callDetails, setCallDetails] = useState<Call>();
-  const {user} = useUser();
+  const { user } = useUser();
   const client = useStreamVideoClient();
-  const createMeeting = async () =>{
-    if(!client || !user) return;
+  const createMeeting = async () => {
+    if (!client || !user) return;
     try {
-      if(!Meeting.dateTime){
-        toast({title: "Please select a date and time"})
+      if (!Meeting.dateTime) {
+        toast({ title: "Please select a date and time" })
         return;
       }
       const id = crypto.randomUUID();
       const call = client.call('default', id);
 
-      if(!call) throw new Error("Failed to create call");
+      if (!call) throw new Error("Failed to create call");
       const startsAt = Meeting.dateTime.toISOString() || new Date(Date.now()).toISOString();
       const description = Meeting.description || 'Instant meeting';
-      
+
       await call.getOrCreate({
-        data:{
+        data: {
           starts_at: startsAt,
           custom: {
             description: description
@@ -42,61 +45,116 @@ const MeetingTypeList = () => {
         }
       })
       setCallDetails(call);
-      if(!Meeting.description){
+      if (!Meeting.description) {
         router.push(`/meeting/${call.id}`)
       }
-      toast({title: "Meeting created!"})
+      toast({ title: "Meeting created!" })
 
     } catch (error) {
       console.log(error);
-      toast({title: "Failed to create meeting"})
+      toast({ title: "Failed to create meeting" })
     }
   }
+  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`
   return (
     <section className='grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4'>
       <HomeCards
         img='/icons/add-meeting.svg'
         title="New Meeting"
-        description= "Start an instant meeting"
-        handleClick= {()=>{
+        description="Start an instant meeting"
+        handleClick={() => {
           setMeetingState('isInstantMeeting')
         }}
-        className = "bg-orange-1"
+        className="bg-orange-1"
       />
-      <HomeCards 
+      <HomeCards
         img='/icons/schedule.svg'
         title="Schedule a Meeting"
-        description= "Plan your meeting"
-        handleClick= {()=>{
+        description="Plan your meeting"
+        handleClick={() => {
           setMeetingState('isScheduleMeeting')
         }}
-        className = "bg-blue-1"
+        className="bg-blue-1"
       />
-      <HomeCards 
+      <HomeCards
         img='/icons/recordings.svg'
         title="View Recordings"
-        description= "Check out your recordings"
-        handleClick= {()=>{
+        description="Check out your recordings"
+        handleClick={() => {
           router.push('/recordings');
         }}
-        className = "bg-purple-1"
+        className="bg-purple-1"
       />
-      <HomeCards 
+      <HomeCards
         img='/icons/join-meeting.svg'
         title="Join Meeting"
-        description= "Via invitation link"
-        handleClick= {()=>{
+        description="Via invitation link"
+        handleClick={() => {
           setMeetingState('isJoiningMeeting')
         }}
-        className = "bg-yellow-1"
+        className="bg-yellow-1"
       />
+      {!callDetails ? (
+        <MeetingModal
+          isOpen={meetingState === 'isScheduleMeeting'}
+          onClose={() => setMeetingState(undefined)}
+          title="Create a meeting"
+          className="text-center"
+          buttonText="Start Meeting"
+          handleClick={createMeeting}
+
+        >
+          <div className='flex flex-col gap-2.5'>
+            <label className='text-base text-normal leading-[22px] text-sky-2'>
+              Add a description
+            </label>
+            <Textarea className='border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0' onChange={(e) => {
+              setMeeting({ ...Meeting, description: e.target.value })
+            }} />
+          </div>
+          <div className='flex w-full flex-col gap-2.5'>
+            <label className='text-base text-normal leading-[22px] text-sky-2'>
+              Select Date and Time
+            </label>
+            <ReactDatePicker
+              selected={Meeting.dateTime}
+              showTimeSelect
+              timeFormat='HH:mm'
+              timeIntervals={15}
+              timeCaption='Time'
+              dateFormat={'MMMM d, yyyy h:mm aa'}
+              className='w-full rounded bg-dark-3 p-2 focus:outline-none'
+              onChange={(date) => {
+                setMeeting({ ...Meeting, dateTime: date! })
+              }}
+            />
+
+          </div>
+        </MeetingModal>
+      ) :
+        <MeetingModal
+          isOpen={meetingState === 'isScheduleMeeting'}
+          onClose={() => setMeetingState(undefined)}
+          title="Meeting Created"
+          className="text-center"
+          buttonText="Copy Meeting Link"
+          handleClick={() => {
+            navigator.clipboard.writeText(meetingLink)
+            toast({title:"link copied!"})
+          }}
+          image='/icons/checked.svg'
+          buttonIcon='/icons/copy.svg'
+
+
+        />
+      }
       <MeetingModal
-        isOpen= {meetingState === 'isInstantMeeting'} 
-        onClose= {() => setMeetingState(undefined)}
+        isOpen={meetingState === 'isInstantMeeting'}
+        onClose={() => setMeetingState(undefined)}
         title="Start an Instant Meeting"
         className="text-center"
-        buttonText = "Start Meeting"
-        handleClick ={createMeeting}
+        buttonText="Start Meeting"
+        handleClick={createMeeting}
 
       />
     </section>
