@@ -47,7 +47,12 @@ const CallList = ({type}:{type:'ended' | 'upcoming'| 'recordings'}) => {
     //         <h1>{NoCallMessage}</h1>
     //     ) }
     // </div>
-    <MeetingCard/>
+    <div className='grid gap-5  md:grid-cols-2 2xl:grid-cols-3'>
+        <MeetingCard/>
+        <MeetingCard/>
+        <MeetingCard/>
+        <MeetingCard/>
+    </div>
   )
 }
 
