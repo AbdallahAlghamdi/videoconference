@@ -35,17 +35,16 @@ const MeetingCard = ({
     <div className='flex flex-col bg-dark-1 gap-2 pt-6 p-5 w-full rounded-lg'>
       <div className='gap-2 flex-col flex'>
         <Image src={icon} alt="upcoming" width={28} height={28} />
-        <h1 className='font-extrabold'>Team Sync: Sprint Planning & Updates</h1>
-        <p className=' text-sm font-light'>March 15, 2024 - 10:00 AM</p>
+        <h1 className='font-extrabold'>{title}</h1>
+        <p className=' text-sm font-light'>{date}</p>
       </div>
         {!isPreviousMeeting && 
         <div className='gap-2  flex flex-col '>
-        <Button className='font-bold bg-blue-500'>
-          Start
+        <Button onClick={handleClick} className='font-bold bg-blue-500'>
+          {buttonText}
         </Button>
-        <Button className='bg-[#252940] '>
-          <Copy width={14}/>
-
+        <Button onClick={()=>{navigator.clipboard.writeText(link);}} className='bg-[#252940] '>
+          <Image src={buttonIcon1!} alt="" width={20} height={20} />
           <p className='ml-1'>Copy Invitation</p>
         </Button>
       </div>

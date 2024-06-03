@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input"
 const MeetingTypeList = () => {
   const { toast } = useToast()
   const router = useRouter();
+  const clientTimeOffset = new Date().getTimezoneOffset();
   const [meetingState, setMeetingState] = useState<'isScheduleMeeting' | 'isJoiningMeeting' | 'isInstantMeeting' | undefined>();
   const [Meeting, setMeeting] = useState({
     dateTime: new Date(),
@@ -121,13 +122,17 @@ const MeetingTypeList = () => {
             <ReactDatePicker
               selected={Meeting.dateTime}
               showTimeSelect
+              
               timeFormat='HH:mm'
               timeIntervals={15}
               timeCaption='Time'
               dateFormat={'MMMM d, yyyy h:mm aa'}
               className='w-full rounded bg-dark-3 p-2 focus:outline-none'
               onChange={(date) => {
-                setMeeting({ ...Meeting, dateTime: date! })
+                if(date){
+                  
+                  setMeeting({ ...Meeting, dateTime: new Date(date.getTime() + clientTimeOffset) })
+                }
               }}
             />
 

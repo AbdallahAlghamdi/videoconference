@@ -4,11 +4,11 @@ import { toast } from '@/components/ui/use-toast';
 import React from 'react'
 
 const Home = () => {
-  const NOW = new Date();
-  const ClientOffset = NOW.getTimezoneOffset();
-  const ClientTime = new Date( NOW.getTime() + ClientOffset )
+  const ServerTime = new Date();
+  const ClientOffset = ServerTime.getTimezoneOffset();
+  const ClientTime = new Date( ServerTime.getTime() + ClientOffset )
   const TIME = ClientTime.toLocaleTimeString([], { timeStyle: 'short' });
-  const DATE = `${NOW.toLocaleDateString(undefined, {
+  const DATE = `${new Date( ServerTime.getTime() + ClientOffset ).toLocaleDateString(undefined, {
     weekday: "long",
     year: "numeric",
     month: "long",
