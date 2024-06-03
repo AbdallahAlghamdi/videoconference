@@ -2,11 +2,8 @@
 
 import Image from "next/image";
 
-import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { avatarImages } from "@/constants";
 import { useToast } from "./ui/use-toast";
-import { Copy } from "lucide-react";
 
 interface MeetingCardProps {
   title: string;
@@ -43,7 +40,7 @@ const MeetingCard = ({
         <Button onClick={handleClick} className='font-bold bg-blue-500'>
           {buttonText}
         </Button>
-        <Button onClick={()=>{navigator.clipboard.writeText(link);}} className='bg-[#252940] '>
+        <Button onClick={()=>{navigator.clipboard.writeText( link);}} className='bg-[#252940] '>
           <Image src={buttonIcon1!} alt="" width={20} height={20} />
           <p className='ml-1'>Copy Invitation</p>
         </Button>

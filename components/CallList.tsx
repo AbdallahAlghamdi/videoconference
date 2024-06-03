@@ -94,7 +94,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
             isPreviousMeeting={type === 'ended'}
             link={
               type === 'recordings'
-                ? (meeting as CallRecording).url
+                ? process.env.NEXT_PUBLIC_BASE_URL +(meeting as CallRecording).url
                 : `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${(meeting as Call).id}`
             }
             buttonIcon1={type === 'recordings' ? '/icons/play.svg' : '/icons/upcoming.svg'}
