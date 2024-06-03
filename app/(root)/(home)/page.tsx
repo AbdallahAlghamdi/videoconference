@@ -1,7 +1,6 @@
 'use client'
 import MeetingTypeList from '@/components/MeetingTypeList';
 import { toast } from '@/components/ui/use-toast';
-import { now } from 'moment';
 import React from 'react'
 
 const Home = () => {
