@@ -70,7 +70,7 @@ const CallList = ({ type }: { type: 'ended' | 'upcoming' | 'recordings' }) => {
   const noCallsMessage = getNoCallsMessage();
 
   return (
-    <div className="grid   gap-5 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
+    <div className="grid   gap-5 sm:grid-cols-2 xl:grid-cols-3 ">
       {calls && calls.length > 0 ? (
         calls.map((meeting: Call | CallRecording) => (
           <MeetingCard
