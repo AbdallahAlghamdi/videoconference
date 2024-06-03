@@ -9,6 +9,8 @@ import { useToast } from "@/components/ui/use-toast"
 import { Toast } from '@radix-ui/react-toast'
 import { Textarea } from "@/components/ui/textarea"
 import ReactDatePicker from 'react-datepicker'
+import { Input } from "@/components/ui/input"
+
 
 const MeetingTypeList = () => {
   const { toast } = useToast()
@@ -155,8 +157,21 @@ const MeetingTypeList = () => {
         className="text-center"
         buttonText="Start Meeting"
         handleClick={createMeeting}
-
       />
+      <MeetingModal
+        isOpen={meetingState === 'isJoiningMeeting'}
+        onClose={() => setMeetingState(undefined)}
+        title="Type the link here"
+        className="text-center"
+        buttonText="Join Meeting"
+        handleClick={()=>{
+          router.push(Meeting.link);
+        }}
+      >
+        <Input placeholder='Meeting Link'  className='border-none bg-dark-3 focus-visible:ring-0 focus-visible:ring-offset-0'  onChange={(e)=>setMeeting({...Meeting, link: e.target.value})}/>
+
+
+      </MeetingModal>
     </section>
   )
 }
