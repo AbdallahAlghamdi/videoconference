@@ -40,7 +40,11 @@ const MeetingCard = ({
         <Button onClick={handleClick} className='font-bold bg-blue-500'>
           {buttonText}
         </Button>
-        <Button onClick={()=>{navigator.clipboard.writeText( link);}} className='bg-[#252940] '>
+        <Button onClick={()=>{navigator.clipboard.writeText( link);
+           toast({
+                  title: "Link Copied",
+                });
+        }} className='bg-[#252940] '>
           <Image src={buttonIcon1!} alt="" width={20} height={20} />
           <p className='ml-1'>Copy Invitation</p>
         </Button>
